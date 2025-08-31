@@ -68,7 +68,6 @@ fylax = "fylax.gui:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["fylax*"]
 
 [tool.setuptools.package-data]
 "*" = ["assets/*"]
