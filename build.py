@@ -55,7 +55,7 @@ def main():
         "--name", "Fylax",
         "--icon", "assets/app.ico",
         "--add-data", "assets;assets" if os.name == 'nt' else "assets:assets",
-        "fylax/gui.py"
+        "src/fylax/gui.py"
     ]
     
     build_cmd = " ".join(cmd)

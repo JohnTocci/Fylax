@@ -67,7 +67,7 @@ build = [
 fylax = "fylax.gui:main"
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 include = ["fylax*"]
 
 [tool.setuptools.package-data]
