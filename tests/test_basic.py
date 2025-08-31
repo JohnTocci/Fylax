@@ -1,83 +1,63 @@
-name: CI
+"""
+Basic tests for Fylax file organization utility.
+"""
 
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+import os
+import sys
+import json
+from pathlib import Path
 
-jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+# Add the 'src' directory to the Python path so it can find the 'fylax' package
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-    steps:
-    - uses: actions/checkout@v4
+# --- CORRECTED IMPORTS ---
+from fylax import main, gui
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+def test_import_main():
+    """Test that the main module can be imported."""
+    assert hasattr(main, 'organize_folder')
+    assert hasattr(main, 'get_profile_data')
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+def test_config_json_exists():
+    """Test that config.json exists and is valid JSON."""
+    config_path = Path(__file__).parent.parent / "config.json"
+    assert config_path.exists(), "config.json file not found"
 
-    - name: Lint with flake8
-      run: |
-        flake8 src/fylax/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 src/fylax/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
 
-    - name: Format check with Black
-      run: |
-        black --check src/fylax/
+    assert "profiles" in config, "config.json missing profiles section"
+    assert "active_profile" in config, "config.json missing active_profile"
 
-    - name: Import sort check with isort
-      run: |
-        isort --check-only --diff src/fylax/
+def test_assets_directory():
+    """Test that assets directory exists with required files."""
+    assets_path = Path(__file__).parent.parent / "assets"
+    assert assets_path.exists(), "assets directory not found"
 
-    - name: Type check with mypy
-      run: |
-        mypy src/fylax/ --ignore-missing-imports
+    # Check for icon files
+    ico_path = assets_path / "app.ico"
+    png_path = assets_path / "app.png"
 
-    - name: Test with pytest
-      run: |
-        pytest tests/ -v
+    # At least one icon should exist
+    assert ico_path.exists() or png_path.exists(), "No app icon found in assets"
 
-    - name: Test application imports
-      run: |
-        # --- CORRECTED IMPORT TEST ---
-        python -c "from fylax import main, gui; print('All imports successful')"
+def test_readme_exists():
+    """Test that README.md exists and has content."""
+    readme_path = Path(__file__).parent.parent / "README.md"
+    assert readme_path.exists(), "README.md not found"
 
-  build:
-    runs-on: windows-latest
-    needs: test
-    
-    steps:
-    - uses: actions/checkout@v4
+    with open(readme_path, 'r', encoding='utf-8') as f:
+        content = f.read()
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+    assert len(content) > 100, "README.md appears to be too short"
+    assert "Fylax" in content, "README.md should mention Fylax"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pyinstaller
+def test_requirements_file():
+    """Test that requirements.txt exists and has customtkinter."""
+    req_path = Path(__file__).parent.parent / "requirements.txt"
+    assert req_path.exists(), "requirements.txt not found"
 
-    - name: Build executable
-      run: |
-        pyinstaller --noconfirm --windowed --onefile --name Fylax --icon assets/app.ico --add-data "assets;assets" src/fylax/gui.py
+    with open(req_path, 'r', encoding='utf-8') as f:
+        content = f.read()
 
-    - name: Upload executable
-      uses: actions/upload-artifact@v4
-      with:
-        name: Fylax-Windows-Executable
-        path: dist/Fylax.exe
+    assert "customtkinter" in content, "requirements.txt should include customtkinter"
