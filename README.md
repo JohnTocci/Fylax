@@ -6,8 +6,6 @@
 
 **Fylax** is an intelligent file organization tool that automatically sorts your files into structured folders based on customizable rules. Whether you're dealing with a cluttered Downloads folder or organizing years of documents, Fylax makes file management effortless with its intuitive GUI and powerful automation features.
 
-![Fylax Demo](https://via.placeholder.com/800x400/4CAF50/white?text=Fylax+Interface+Demo)
-
 ## ✨ Key Features
 
 ### 🎯 **Smart Organization**
