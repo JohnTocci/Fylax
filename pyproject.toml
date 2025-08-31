@@ -64,11 +64,11 @@ build = [
 "Discussions" = "https://github.com/JohnTocci/Fylax/discussions"
 
 [project.scripts]
-fylax = "src.gui:main"
+fylax = "fylax.gui:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["src*"]
+include = ["fylax*"]
 
 [tool.setuptools.package-data]
 "*" = ["assets/*"]
@@ -97,7 +97,7 @@ extend-exclude = '''
 profile = "black"
 multi_line_output = 3
 line_length = 88
-known_first_party = ["src"]
+known_first_party = ["fylax"]
 
 # mypy configuration
 [tool.mypy]
@@ -125,7 +125,7 @@ addopts = "--verbose --tb=short"
 
 # Coverage configuration
 [tool.coverage.run]
-source = ["src"]
+source = ["fylax"]
 omit = ["tests/*", "*/test_*"]
 
 [tool.coverage.report]

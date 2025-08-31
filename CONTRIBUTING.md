@@ -30,7 +30,7 @@ Thank you for your interest in contributing to Fylax! We welcome contributions f
    ```
 5. **Test the installation**:
    ```bash
-   python src/gui.py
+   python fylax/gui.py
    ```
 
 ## 🎯 How to Contribute
@@ -86,7 +86,7 @@ We welcome:
 3. **Test your changes**:
    ```bash
    # Run the application to test functionality
-   python src/gui.py
+   python fylax/gui.py
    
    # Test edge cases and error scenarios
    # Ensure existing functionality still works
@@ -98,12 +98,12 @@ We welcome:
    pip install black isort flake8 mypy
    
    # Format code
-   black src/
-   isort src/
+   black fylax/
+   isort fylax/
    
    # Check for issues
-   flake8 src/
-   mypy src/
+   flake8 fylax/
+   mypy fylax/
    ```
 
 5. **Commit your changes**:
@@ -159,7 +159,7 @@ We follow [PEP 8](https://pep8.org/) with some specific preferences:
 ### Code Organization
 
 ```
-src/
+fylax/
 ├── gui.py          # Main GUI application
 ├── main.py         # Core organization engine
 ├── __init__.py     # Package initialization

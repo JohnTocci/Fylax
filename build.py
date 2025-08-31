@@ -27,7 +27,7 @@ def main():
     print("🚀 Building Fylax executable...")
     
     # Check if we're in the right directory
-    if not Path("src/gui.py").exists():
+    if not Path("fylax/gui.py").exists():
         print("❌ Error: Must run from project root directory")
         sys.exit(1)
     
@@ -55,7 +55,7 @@ def main():
         "--name", "Fylax",
         "--icon", "assets/app.ico",
         "--add-data", "assets;assets" if os.name == 'nt' else "assets:assets",
-        "src/gui.py"
+        "fylax/gui.py"
     ]
     
     build_cmd = " ".join(cmd)

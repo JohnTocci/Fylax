@@ -54,7 +54,7 @@ cd Fylax
 pip install -r requirements.txt
 
 # Run the application
-python src/gui.py
+python fylax/gui.py
 ```
 
 #### Option 3: Windows Executable
@@ -191,7 +191,7 @@ pyinstaller --noconfirm --windowed --onefile \
   --name Fylax \
   --icon assets/app.ico \
   --add-data "assets;assets" \
-  src/gui.py
+  fylax/gui.py
 ```
 
 The executable will be created in the `dist/` folder.
@@ -201,7 +201,7 @@ The executable will be created in the `dist/` folder.
 Use Fylax programmatically in your own scripts:
 
 ```python
-from src.main import organize_folder
+from fylax.main import organize_folder
 
 # Organize a folder with custom settings
 result = organize_folder(
@@ -219,7 +219,7 @@ print(f"Organized {result['moved']} files")
 ### 🔍 Duplicate File Management
 
 ```python
-from src.main import find_duplicate_files, handle_duplicates
+from fylax.main import find_duplicate_files, handle_duplicates
 
 # Find duplicates
 duplicates = find_duplicate_files(
@@ -275,7 +275,7 @@ pip install -r requirements.txt
 pip install -e .
 
 # Run in development mode
-python src/gui.py
+python fylax/gui.py
 ```
 
 ### 🧪 Running Tests
@@ -285,7 +285,7 @@ python src/gui.py
 python -m pytest tests/
 
 # Run with coverage
-python -m pytest tests/ --cov=src
+python -m pytest tests/ --cov=fylax
 ```
 
 ### 📝 Code Style
@@ -298,12 +298,12 @@ This project uses:
 
 ```bash
 # Format code
-black src/
-isort src/
+black fylax/
+isort fylax/
 
 # Check style
-flake8 src/
-mypy src/
+flake8 fylax/
+mypy fylax/
 ```
 
 ---
