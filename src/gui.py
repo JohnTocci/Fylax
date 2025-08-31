@@ -1213,8 +1213,12 @@ class OrganizerApp(ctk.CTk):
     def _save_profile_as_new(self) -> None:
         """Save current rules as a new profile."""
         # Get profile name from user
-        from tkinter import simpledialog
-        profile_name = simpledialog.askstring("New Profile", "Enter profile name:")
+        try:
+            from tkinter import simpledialog
+            profile_name = simpledialog.askstring("New Profile", "Enter profile name:")
+        except ImportError:
+            messagebox.showerror("Error", "Cannot create new profile: simpledialog not available")
+            return
         
         if not profile_name:
             return

@@ -515,8 +515,12 @@ def get_profile_data(profile_name: str = None) -> Dict[str, Any]:
         profiles = cfg.get("profiles", {})
         return profiles.get(profile_name, {"rules": {}, "advanced_rules": []})
         
-    except (json.JSONDecodeError, IOError):
-        return {"rules": {}, "advanced_rules": []}
+    except json.JSONDecodeError as e:
+        # Config file is corrupted
+        raise ValueError(f"Invalid JSON in config file: {e}")
+    except (IOError, OSError) as e:
+        # File access error
+        raise ValueError(f"Cannot read config file: {e}")
 
 def save_profile(profile_name: str, profile_data: Dict[str, Any]) -> bool:
     """Save a profile. Returns True on success."""
@@ -643,7 +647,9 @@ def _calculate_file_hash(file_path: str, hash_algorithm: str = 'md5') -> str:
                 hasher.update(chunk)
         
         return hasher.hexdigest()
-    except (IOError, OSError):
+    except (IOError, OSError) as e:
+        # Log the specific error for debugging but return empty string to continue processing
+        # This prevents one unreadable file from breaking duplicate detection
         return ""
 
 def find_duplicate_files(
