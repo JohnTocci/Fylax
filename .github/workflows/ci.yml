@@ -30,22 +30,24 @@ jobs:
 
     - name: Lint with flake8
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 src/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        # CORRECTED PATH: Check inside src/fylax
+        flake8 src/fylax/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 src/fylax/ --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
     - name: Format check with Black
       run: |
-        black --check src/
+        # CORRECTED PATH: Check inside src/fylax
+        black --check src/fylax/
 
     - name: Import sort check with isort
       run: |
-        isort --check-only --diff src/
+        # CORRECTED PATH: Check inside src/fylax
+        isort --check-only --diff src/fylax/
 
     - name: Type check with mypy
       run: |
-        mypy src/ --ignore-missing-imports
+        # CORRECTED PATH: Check inside src/fylax
+        mypy src/fylax/ --ignore-missing-imports
 
     - name: Test with pytest
       run: |
@@ -53,7 +55,8 @@ jobs:
 
     - name: Test application imports
       run: |
-        python -c "import src.main; import src.gui; print('All imports successful')"
+        # CORRECTED IMPORT STATEMENTS
+        python -c "import src.fylax.main; import src.fylax.gui; print('All imports successful')"
 
   build:
     runs-on: windows-latest
@@ -75,7 +78,8 @@ jobs:
 
     - name: Build executable
       run: |
-        pyinstaller --noconfirm --windowed --onefile --name Fylax --icon assets/app.ico --add-data "assets;assets" src/gui.py
+        # CORRECTED PATH to the main GUI script
+        pyinstaller --noconfirm --windowed --onefile --name Fylax --icon assets/app.ico --add-data "assets;assets" src/fylax/gui.py
 
     - name: Upload executable
       uses: actions/upload-artifact@v4
