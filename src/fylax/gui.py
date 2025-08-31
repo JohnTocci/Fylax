@@ -869,7 +869,8 @@ class OrganizerApp(ctk.CTk):
             self.after(0, lambda: self._show_preview_dialog(results))
             
         except Exception as e:
-            self.after(0, lambda: self._on_preview_error(str(e)))
+            error_msg = str(e)
+            self.after(0, lambda: self._on_preview_error(error_msg))
             
     def _show_preview_dialog(self, results: Dict) -> None:
         """Show the preview dialog with results."""
@@ -1079,7 +1080,8 @@ class OrganizerApp(ctk.CTk):
             self.after(0, lambda: self._display_duplicate_results(duplicates))
             
         except Exception as e:
-            self.after(0, lambda: self._on_duplicate_scan_error(str(e)))
+            error_msg = str(e)
+            self.after(0, lambda: self._on_duplicate_scan_error(error_msg))
             
     def _display_duplicate_results(self, duplicates: Dict[str, List[Tuple[str, str]]]) -> None:
         """Display duplicate scan results."""
@@ -1158,7 +1160,8 @@ class OrganizerApp(ctk.CTk):
             self.after(0, lambda: self._show_duplicate_handle_results(results))
             
         except Exception as e:
-            self.after(0, lambda: self._on_duplicate_handle_error(str(e)))
+            error_msg = str(e)
+            self.after(0, lambda: self._on_duplicate_handle_error(error_msg))
             
     def _show_duplicate_handle_results(self, results: Dict) -> None:
         """Show results of duplicate handling."""
