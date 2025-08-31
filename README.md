@@ -54,7 +54,7 @@ cd Fylax
 pip install -r requirements.txt
 
 # Run the application
-python fylax/gui.py
+python src/fylax/gui.py
 ```
 
 #### Option 3: Windows Executable
@@ -191,7 +191,7 @@ pyinstaller --noconfirm --windowed --onefile \
   --name Fylax \
   --icon assets/app.ico \
   --add-data "assets;assets" \
-  fylax/gui.py
+  src/fylax/gui.py
 ```
 
 The executable will be created in the `dist/` folder.
@@ -275,7 +275,7 @@ pip install -r requirements.txt
 pip install -e .
 
 # Run in development mode
-python fylax/gui.py
+python src/fylax/gui.py
 ```
 
 ### 🧪 Running Tests

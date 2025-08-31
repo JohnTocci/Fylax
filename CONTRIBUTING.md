@@ -30,7 +30,7 @@ Thank you for your interest in contributing to Fylax! We welcome contributions f
    ```
 5. **Test the installation**:
    ```bash
-   python fylax/gui.py
+   python src/fylax/gui.py
    ```
 
 ## 🎯 How to Contribute
@@ -86,7 +86,7 @@ We welcome:
 3. **Test your changes**:
    ```bash
    # Run the application to test functionality
-   python fylax/gui.py
+   python src/fylax/gui.py
    
    # Test edge cases and error scenarios
    # Ensure existing functionality still works
