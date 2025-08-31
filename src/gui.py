@@ -9,7 +9,7 @@ import os
 import json
 import threading
 import queue
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, List
 import tkinter as tk
 from tkinter import ttk
 
@@ -24,7 +24,10 @@ except Exception:  # pragma: no cover - fallback when run directly
 
 APP_NAME = "Fylax"
 APP_ID = "com.fylax.app"
-ICON_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "app.ico")
+# Use icons from the assets folder
+ASSETS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
+ICON_PATH = os.path.join(ASSETS_DIR, "app.ico")
+ICON_PNG_PATH = os.path.join(ASSETS_DIR, "app.png")
 
 
 class EnhancedPreviewDialog:
@@ -326,12 +329,30 @@ class OrganizerApp(ctk.CTk):
             pass
 
     def _set_app_icon(self) -> None:
-        if os.path.exists(ICON_PATH):
+        # Prefer .ico on Windows; ensure robust PNG fallback everywhere
+        ico_exists = os.path.exists(ICON_PATH)
+        png_exists = os.path.exists(ICON_PNG_PATH)
+
+        # 1) Try .ico with iconbitmap (mostly Windows)
+        ico_applied = False
+        if ico_exists:
             try:
                 self.iconbitmap(ICON_PATH)
+                ico_applied = True
+            except Exception:
+                ico_applied = False
+
+        # 2) Fallback or additionally set PNG via iconphoto (works cross-platform)
+        if png_exists:
+            try:
+                # Keep a reference to avoid GC
+                self._icon_photo = tk.PhotoImage(file=ICON_PNG_PATH)
+                self.iconphoto(True, self._icon_photo)
             except Exception:
                 pass
-        if os.name == 'nt' and os.path.exists(ICON_PATH):
+
+        # Windows taskbar and Alt-Tab icon via WinAPI
+        if os.name == 'nt' and ico_exists:
             try:
                 import ctypes
                 LR_LOADFROMFILE = 0x0010
@@ -342,11 +363,15 @@ class OrganizerApp(ctk.CTk):
                 GCL_HICON = -14
                 GCL_HICONSM = -34
                 hwnd = self.winfo_id()
-                ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 1, big)
-                ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 0, small)
+                if big:
+                    ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 1, big)
+                if small:
+                    ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 0, small)
                 try:
-                    ctypes.windll.user32.SetClassLongPtrW(hwnd, GCL_HICON, big)
-                    ctypes.windll.user32.SetClassLongPtrW(hwnd, GCL_HICONSM, small)
+                    if big:
+                        ctypes.windll.user32.SetClassLongPtrW(hwnd, GCL_HICON, big)
+                    if small:
+                        ctypes.windll.user32.SetClassLongPtrW(hwnd, GCL_HICONSM, small)
                 except Exception:
                     pass
             except Exception:
