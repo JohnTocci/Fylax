@@ -35,6 +35,32 @@ Place an icon file in `assets/` and it will be picked up automatically on startu
 - `assets/app.ico` (Windows)
 - `assets/app.png` (macOS/Linux optional)
 
+## Packaging (optional)
+
+Create a single-file Windows executable with the app icon using PyInstaller. Run these in PowerShell from the project root, preferably with your virtual environment's Python:
+
+```
+pip install pyinstaller
+pyinstaller --noconfirm ^
+  --windowed ^
+  --name Fylax ^
+  --icon assets/app.ico ^
+  --add-data "assets;assets" ^
+  src/gui.py
+```
+
+Notes:
+- `--windowed` prevents a console window.
+- `--icon assets/app.ico` sets the executable’s icon.
+- `--add-data "assets;assets"` bundles the assets folder; on macOS/Linux use `assets:assets`.
+- After build, the app is in `dist/Fylax/` (folder) or `dist/Fylax.exe` if using `--onefile`.
+
+To build a single-file exe add `--onefile`:
+
+```
+pyinstaller --noconfirm --windowed --onefile --name Fylax --icon assets/app.ico --add-data "assets;assets" src/gui.py
+```
+
 ## Configure rules
 
 Fylax supports both traditional extension-based rules and advanced pattern-based rules.
