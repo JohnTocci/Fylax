@@ -22,6 +22,13 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Install system dependencies
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo apt-get update
+          sudo apt-get install -y python3-tk
+        fi
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
