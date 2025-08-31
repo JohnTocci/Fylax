@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,21 +8,131 @@ version = "1.0.0"
 authors = [
   { name="John Tocci", email="john@johntocci.com" },
 ]
-description = "A smart file organization utility"
+description = "A smart file organization utility that automatically sorts files into structured folders based on customizable rules"
 readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.8"
+keywords = ["file-organization", "automation", "file-management", "gui", "desktop-app"]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Desktop Environment :: File Managers",
+    "Topic :: System :: Filesystems",
+    "Topic :: Utilities",
     "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Environment :: X11 Applications",
+    "Environment :: Win32 (MS Windows)",
+    "Environment :: MacOS X",
 ]
 dependencies = [
     "customtkinter>=5.2.2",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pyinstaller>=5.0.0",
+]
+build = [
+    "pyinstaller>=5.0.0",
+    "setuptools>=61.0",
+    "wheel",
+    "twine",
+]
+
 [project.urls]
-"Homepage" = "https://github.com/johntocci/fylax"
-"Bug Tracker" = "https://github.com/johntocci/fylax/issues"
+"Homepage" = "https://github.com/JohnTocci/Fylax"
+"Documentation" = "https://github.com/JohnTocci/Fylax#readme"
+"Repository" = "https://github.com/JohnTocci/Fylax"
+"Bug Tracker" = "https://github.com/JohnTocci/Fylax/issues"
+"Changelog" = "https://github.com/JohnTocci/Fylax/blob/main/CHANGELOG.md"
+"Discussions" = "https://github.com/JohnTocci/Fylax/discussions"
 
 [project.scripts]
 fylax = "src.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.setuptools.package-data]
+"*" = ["assets/*"]
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["src"]
+
+# mypy configuration
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+# pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--verbose --tb=short"
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "*/test_*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
