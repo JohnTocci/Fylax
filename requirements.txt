@@ -8,5 +8,5 @@ customtkinter==5.2.2
     # via fylax (pyproject.toml)
 darkdetect==0.8.0
     # via customtkinter
-packaging==25.0
+packaging==26.1
     # via customtkinter
